@@ -1,0 +1,31 @@
+name: Manual Workflow Dispatch
+
+# Определяем триггеры
+on:
+  # Запуск по событию workflow_dispatch
+  workflow_dispatch:
+    # Дополнительные входные параметры (опционально)
+    inputs:
+      environment:
+        description: 'Environment to deploy'  # Описание параметра
+        required: true                        # Обязательный параметр
+        default: 'staging'                    # Значение по умолчанию
+      version:
+        description: 'Version to deploy'
+        required: false
+        default: '1.0.0'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Display environment
+        run: echo "Deploying to ${{ inputs.environment }}"
+
+      - name: Display version
+        if: inputs.version != ''
+        run: echo "Deploying version ${{ inputs.version }}"
