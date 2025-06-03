@@ -14,10 +14,6 @@ on:
         description: 'Version to deploy'
         required: false
         default: '1.0.0'
-      deploy_user:
-        description: 'User account for deployment'
-        required: false
-        default: 'deployer'
 
 jobs:
   deploy:
