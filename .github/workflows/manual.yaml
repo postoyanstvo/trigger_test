@@ -34,5 +34,3 @@ jobs:
         if: inputs.version != ''
         run: echo "Deploying version ${{ inputs.version }}"
         
-      - name: Display user
-        run: echo "Deploying as user: ${{ inputs.deploy_user }}"
