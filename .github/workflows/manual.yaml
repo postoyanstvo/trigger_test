@@ -3,6 +3,7 @@ name: Manual Workflow Dispatch
 on:
   workflow_dispatch:
     inputs:
+      # --- Базовые параметры ---
       environment:
         description: 'Environment to deploy (e.g., staging, production)'
         required: true
@@ -23,6 +24,8 @@ on:
           - ap-south
         default: eu-west
         description: 'Region for deployment'
+
+      # --- Опции деплоя ---
       run_migrations:
         description: 'Whether to run database migrations'
         default: 'true'
@@ -32,6 +35,41 @@ on:
       clear_cache:
         description: 'Clear cache after deployment'
         default: false
+
+      # --- Новые параметры ---
+      config:
+        type: choice
+        options:
+          - dev
+          - prod
+          - custom
+        default: dev
+        description: 'Configuration profile to use'
+      ssl_enabled:
+        description: 'Enable SSL certificate'
+      max_retries:
+        description: 'Maximum number of retries on failure'
+      notifications:
+        description: 'Send deployment notifications'
+      timeout:
+        description: 'Deployment timeout in seconds'
+      log_level:
+        type: choice
+        options:
+          - debug
+          - info
+          - warn
+          - error
+        default: info
+      backup_before_deploy:
+        description: 'Create a backup before deployment'
+      auto_rollback:
+        description: 'Automatically rollback on failure'
+      custom_tags:
+        description: 'Custom tags for this deployment (e.g., "feature-a", "hotfix")'
+      deploy_time:
+        description: 'Planned deployment time (for scheduling)'
+        default: 'now'
 
 jobs:
   deploy:
@@ -62,3 +100,34 @@ jobs:
 
       - name: Clear cache?
         run: echo "Clear cache:${{ inputs.clear_cache }}"
+
+      - name: Configuration profile
+        run: echo "Using configuration:${{ inputs.config }}"
+
+      - name: SSL Enabled
+        run: echo "SSL Enabled:${{ inputs.ssl_enabled }}"
+
+      - name: Max Retries
+        run: echo "Max Retries:${{ inputs.max_retries }}"
+
+      - name: Notifications Enabled
+        run: echo "Notifications Enabled:${{ inputs.notifications }}"
+
+      - name: Timeout (seconds)
+        run: echo "Timeout:${{ inputs.timeout }}"
+
+      - name: Log Level
+        run: echo "Log Level:${{ inputs.log_level }}"
+
+      - name: Backup Before Deploy
+        run: echo "Backup Before Deploy:${{ inputs.backup_before_deploy }}"
+
+      - name: Auto Rollback
+        run: echo "Auto Rollback:${{ inputs.auto_rollback }}"
+
+      - name: Custom Tags
+        if: inputs.custom_tags != ''
+        run: echo "Custom Tags:${{ inputs.custom_tags }}"
+
+      - name: Deploy Time
+        run: echo "Deploy Time:${{ inputs.deploy_time }}"
