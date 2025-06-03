@@ -29,4 +29,3 @@ jobs:
       - name: Display version
         if: inputs.version != ''
         run: echo "Deploying version ${{ inputs.version }}"
-        
