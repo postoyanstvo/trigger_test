@@ -3,25 +3,18 @@ name: Manual Workflow Dispatch
 on:
   workflow_dispatch:
     inputs:
-      # 1. Окружение для деплоя
       environment:
         description: 'Environment to deploy (e.g., staging, production)'
         required: true
         default: 'staging'
-
-      # 2. Версия приложения
       version:
         description: 'Application version to deploy'
         required: false
         default: '1.0.0'
-
-      # 3. Имя пользователя для деплоя
       deploy_user:
         description: 'User account for deployment'
         required: false
         default: 'deployer'
-
-      # 4. Регион развертывания
       region:
         type: choice
         options:
@@ -30,24 +23,16 @@ on:
           - ap-south
         default: eu-west
         description: 'Region for deployment'
-
-      # 5. Нужно ли запускать миграции БД
       run_migrations:
         type: boolean
         description: 'Whether to run database migrations'
         default: true
-
-      # 6. Токен API для авторизации
       api_token:
         description: 'API token for external services'
         required: false
-
-      # 7. Домен сайта
       domain:
         description: 'Domain name for the application'
         default: 'example.com'
-
-      # 8. Конфигурация среды
       config:
         type: choice
         options:
@@ -55,14 +40,10 @@ on:
           - prod
           - custom
         default: dev
-
-      # 9. Нужно ли очистить кэш
       clear_cache:
         type: boolean
         description: 'Clear cache after deployment'
         default: false
-
-      # 10. Комментарий или описание деплоя
       notes:
         description: 'Additional notes or description for this deployment'
         required: false
@@ -98,12 +79,4 @@ jobs:
       - name: Domain name
         run: echo "Domain: ${{ inputs.domain }}"
 
-      - name: Configuration type
-        run: echo "Configuration: ${{ inputs.config }}"
-
-      - name: Clear cache?
-        run: echo "Clear cache: ${{ inputs.clear_cache }}"
-
-      - name: Deployment notes
-        if: inputs.notes != ''
-        run: echo "Notes: ${{ inputs.notes }}"
+      - name:
