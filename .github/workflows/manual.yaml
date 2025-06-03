@@ -1,19 +1,37 @@
-name: Manual Workflow Dispatch 2
+name: Manual Workflow Dispatch
 
-# Определяем триггеры
 on:
-  # Запуск по событию workflow_dispatch
   workflow_dispatch:
-    # Дополнительные входные параметры (опционально)
     inputs:
       environment:
-        description: 'Environment to deploy'  # Описание параметра
-        required: true                        # Обязательный параметр
-        default: 'staging'                    # Значение по умолчанию
+        description: 'Environment to deploy (e.g., staging, production)'
+        required: true
+        default: 'staging'
       version:
-        description: 'Version to deploy'
+        description: 'Application version to deploy'
         required: false
         default: '1.0.0'
+      deploy_user:
+        description: 'User account for deployment'
+        required: false
+        default: 'deployer'
+      region:
+        type: choice
+        options:
+          - eu-west
+          - us-east
+          - ap-south
+        default: eu-west
+        description: 'Region for deployment'
+      run_migrations:
+        description: 'Whether to run database migrations'
+        default: 'true'
+      domain:
+        description: 'Domain name for the application'
+        default: 'example.com'
+      clear_cache:
+        description: 'Clear cache after deployment'
+        default: false
 
 jobs:
   deploy:
@@ -24,8 +42,23 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Display environment
-        run: echo "Deploying to ${{ inputs.environment }}"
+        run: echo "Deploying to environment:${{ inputs.environment }}"
 
       - name: Display version
         if: inputs.version != ''
-        run: echo "Deploying version ${{ inputs.version }}"
+        run: echo "Deploying version:${{ inputs.version }}"
+
+      - name: Display user
+        run: echo "Deploying as user:${{ inputs.deploy_user }}"
+
+      - name: Display region
+        run: echo "Deployment region:${{ inputs.region }}"
+
+      - name: Run database migrations?
+        run: echo "Run migrations:${{ inputs.run_migrations }}"
+
+      - name: Domain name
+        run: echo "Domain:${{ inputs.domain }}"
+
+      - name: Clear cache?
+        run: echo "Clear cache:${{ inputs.clear_cache }}"
