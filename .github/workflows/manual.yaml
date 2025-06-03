@@ -1,31 +1,61 @@
 name: Manual Workflow Dispatch
 
-# Определяем триггеры
 on:
-  # Запуск по событию workflow_dispatch
   workflow_dispatch:
-    # Дополнительные входные параметры (опционально)
     inputs:
+      # 1
       environment:
-        description: 'Environment to deploy'  # Описание параметра
-        required: true                        # Обязательный параметр
-        default: 'staging'                    # Значение по умолчанию
+        description: 'Environment to deploy'
+        required: true
+        default: 'staging'
+        type: string
+      # 2
       version:
         description: 'Version to deploy'
         required: false
         default: '1.0.0'
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Display environment
-        run: echo "Deploying to ${{ inputs.environment }}"
-
-      - name: Display version
-        if: inputs.version != ''
-        run: echo "Deploying version ${{ inputs.version }}"
+        type: string
+      # 3
+      deploy_backend:
+        description: 'Deploy backend services?'
+        required: false
+        default: 'true'
+        type: boolean
+      # 4
+      deploy_frontend:
+        description: 'Deploy frontend services?'
+        required: false
+        default: 'true'
+        type: boolean
+      # 5
+      region:
+        description: 'Region for deployment'
+        required: false
+        default: 'us-east-1'
+        type: string
+      # 6
+      instance_type:
+        description: 'Instance type for deployment'
+        required: false
+        default: 't3.medium'
+        type: string
+      # 7
+      branch:
+        description: 'Git branch to deploy'
+        required: false
+        default: 'main'
+        type: string
+      # 8
+      build_mode:
+        description: 'Build mode (debug/release)'
+        required: false
+        default: 'release'
+        type: choice
+        options:
+          - debug
+          - release
+      # 9
+      database_migrate:
+        description: 'Run database migrations?'
+        required: false
+        default: 'false'
