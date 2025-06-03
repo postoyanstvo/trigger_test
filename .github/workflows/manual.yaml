@@ -56,27 +56,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Display environment
-        run: echo "Deploying to environment: ${{ inputs.environment }}"
+      - name: Deploy to ${{ github.event.inputs.environment }}
+        run: |
+          echo "Deploying to environment: ${{ github.event.inputs.environment }}"
 
-      - name: Display version
-        if: inputs.version != ''
-        run: echo "Deploying version: ${{ inputs.version }}"
-
-      - name: Display user
-        run: echo "Deploying as user: ${{ inputs.deploy_user }}"
-
-      - name: Display region
-        run: echo "Deployment region: ${{ inputs.region }}"
-
-      - name: Run database migrations?
-        run: echo "Run migrations: ${{ inputs.run_migrations }}"
-
-      - name: Use API token
-        if: inputs.api_token != ''
-        run: echo "Using API token: *********"
-
-      - name: Domain name
-        run: echo "Domain: ${{ inputs.domain }}"
-
-      - name:
