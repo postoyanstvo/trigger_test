@@ -59,3 +59,225 @@ on:
         description: 'Run database migrations?'
         required: false
         default: 'false'
+        type: boolean
+      # 10
+      send_notification:
+        description: 'Send deployment notification?'
+        required: false
+        default: 'true'
+        type: boolean
+
+      # 11
+      timeout_seconds:
+        description: 'Deployment timeout in seconds'
+        required: false
+        default: '300'
+        type: number
+      # 12
+      log_level:
+        description: 'Log level during execution'
+        required: false
+        default: 'info'
+        type: choice
+        options:
+          - trace
+          - debug
+          - info
+          - warn
+          - error
+      # 13
+      use_cache:
+        description: 'Use build cache?'
+        required: false
+        default: 'true'
+        type: boolean
+      # 14
+      custom_domain:
+        description: 'Custom domain for the deployment'
+        required: false
+        default: ''
+        type: string
+      # 15
+      dry_run:
+        description: 'Perform a dry run without actual changes'
+        required: false
+        default: 'false'
+        type: boolean
+      # 16
+      max_retries:
+        description: 'Max retries for deployment steps'
+        required: false
+        default: '3'
+        type: number
+      # 17
+      enable_ssl:
+        description: 'Enable SSL for this deployment'
+        required: false
+        default: 'true'
+        type: boolean
+      # 18
+      team:
+        description: 'Team responsible for deployment'
+        required: false
+        default: 'devops'
+        type: string
+      # 19
+      priority:
+        description: 'Priority of deployment'
+        required: false
+        default: 'normal'
+        type: choice
+        options:
+          - low
+          - normal
+          - high
+      # 20
+      tag:
+        description: 'Tag name for this deployment'
+        required: false
+        default: ''
+        type: string
+
+      # 21
+      config_profile:
+        description: 'Configuration profile to use'
+        required: false
+        default: 'default'
+        type: string
+      # 22
+      auto_rollback:
+        description: 'Auto-rollback on failure?'
+        required: false
+        default: 'true'
+        type: boolean
+      # 23
+      memory_limit:
+        description: 'Memory limit for containers (MB)'
+        required: false
+        default: '512'
+        type: number
+      # 24
+      cpu_limit:
+        description: 'CPU limit for containers (units)'
+        required: false
+        default: '500'
+        type: number
+      # 25
+      user_email:
+        description: 'Email of the user triggering deployment'
+        required: false
+        default: ''
+        type: string
+      # 26
+      force_update:
+        description: 'Force update even if nothing changed?'
+        required: false
+        default: 'false'
+        type: boolean
+      # 27
+      skip_tests:
+        description: 'Skip running tests before deploy'
+        required: false
+        default: 'false'
+        type: boolean
+      # 28
+      alert_channel:
+        description: 'Channel to send alerts to'
+        required: false
+        default: '#deployments'
+        type: string
+      # 29
+      parallel_jobs:
+        description: 'Number of parallel jobs allowed'
+        required: false
+        default: '2'
+        type: number
+      # 30
+      use_https:
+        description: 'Use HTTPS protocol'
+        required: false
+        default: 'true'
+        type: boolean
+
+      # 31
+      db_backup:
+        description: 'Create DB backup before migration'
+        required: false
+        default: 'true'
+        type: boolean
+      # 32
+      node_env:
+        description: 'Node.js environment (development/production)'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - development
+          - production
+      # 33
+      api_version:
+        description: 'API version to deploy'
+        required: false
+        default: 'v1'
+        type: string
+      # 34
+      container_image:
+        description: 'Container image to use'
+        required: false
+        default: 'myapp:latest'
+        type: string
+      # 35
+      enable_debugger:
+        description: 'Enable remote debugger'
+        required: false
+        default: 'false'
+        type: boolean
+      # 36
+      retry_on_fail:
+        description: 'Retry job on failure'
+        required: false
+        default: 'true'
+        type: boolean
+      # 37
+      resource_group:
+        description: 'Cloud resource group'
+        required: false
+        default: 'default-group'
+        type: string
+      # 38
+      cloud_provider:
+        description: 'Cloud provider (aws/gcp/azure)'
+        required: false
+        default: 'aws'
+        type: choice
+        options:
+          - aws
+          - gcp
+          - azure
+      # 39
+      enable_monitoring:
+        description: 'Enable monitoring tools'
+        required: false
+        default: 'true'
+        type: boolean
+      # 40
+      notify_team:
+        description: 'Notify team after deployment'
+        required: false
+        default: 'true'
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Display environment
+        run: echo "Deploying to environment: ${{ inputs.environment }}"
+
+      - name: Display version
+        if: inputs.version != ''
+        run: echo "Deploying version: ${{ inputs.version }}"
