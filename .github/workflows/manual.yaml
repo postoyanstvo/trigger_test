@@ -3,269 +3,69 @@ name: Manual Workflow Dispatch
 on:
   workflow_dispatch:
     inputs:
-      # 1
+      # 1. Окружение для деплоя
       environment:
-        description: 'Environment to deploy'
+        description: 'Environment to deploy (e.g., staging, production)'
         required: true
         default: 'staging'
-        type: string
-      # 2
+
+      # 2. Версия приложения
       version:
-        description: 'Version to deploy'
+        description: 'Application version to deploy'
         required: false
         default: '1.0.0'
-        type: string
-      # 3
-      deploy_backend:
-        description: 'Deploy backend services?'
+
+      # 3. Имя пользователя для деплоя
+      deploy_user:
+        description: 'User account for deployment'
         required: false
-        default: 'true'
-        type: boolean
-      # 4
-      deploy_frontend:
-        description: 'Deploy frontend services?'
-        required: false
-        default: 'true'
-        type: boolean
-      # 5
+        default: 'deployer'
+
+      # 4. Регион развертывания
       region:
+        type: choice
+        options:
+          - eu-west
+          - us-east
+          - ap-south
+        default: eu-west
         description: 'Region for deployment'
-        required: false
-        default: 'us-east-1'
-        type: string
-      # 6
-      instance_type:
-        description: 'Instance type for deployment'
-        required: false
-        default: 't3.medium'
-        type: string
-      # 7
-      branch:
-        description: 'Git branch to deploy'
-        required: false
-        default: 'main'
-        type: string
-      # 8
-      build_mode:
-        description: 'Build mode (debug/release)'
-        required: false
-        default: 'release'
-        type: choice
-        options:
-          - debug
-          - release
-      # 9
-      database_migrate:
-        description: 'Run database migrations?'
-        required: false
-        default: 'false'
-        type: boolean
-      # 10
-      send_notification:
-        description: 'Send deployment notification?'
-        required: false
-        default: 'true'
-        type: boolean
 
-      # 11
-      timeout_seconds:
-        description: 'Deployment timeout in seconds'
-        required: false
-        default: '300'
-        type: number
-      # 12
-      log_level:
-        description: 'Log level during execution'
-        required: false
-        default: 'info'
-        type: choice
-        options:
-          - trace
-          - debug
-          - info
-          - warn
-          - error
-      # 13
-      use_cache:
-        description: 'Use build cache?'
-        required: false
-        default: 'true'
+      # 5. Нужно ли запускать миграции БД
+      run_migrations:
         type: boolean
-      # 14
-      custom_domain:
-        description: 'Custom domain for the deployment'
-        required: false
-        default: ''
-        type: string
-      # 15
-      dry_run:
-        description: 'Perform a dry run without actual changes'
-        required: false
-        default: 'false'
-        type: boolean
-      # 16
-      max_retries:
-        description: 'Max retries for deployment steps'
-        required: false
-        default: '3'
-        type: number
-      # 17
-      enable_ssl:
-        description: 'Enable SSL for this deployment'
-        required: false
-        default: 'true'
-        type: boolean
-      # 18
-      team:
-        description: 'Team responsible for deployment'
-        required: false
-        default: 'devops'
-        type: string
-      # 19
-      priority:
-        description: 'Priority of deployment'
-        required: false
-        default: 'normal'
-        type: choice
-        options:
-          - low
-          - normal
-          - high
-      # 20
-      tag:
-        description: 'Tag name for this deployment'
-        required: false
-        default: ''
-        type: string
+        description: 'Whether to run database migrations'
+        default: true
 
-      # 21
-      config_profile:
-        description: 'Configuration profile to use'
+      # 6. Токен API для авторизации
+      api_token:
+        description: 'API token for external services'
         required: false
-        default: 'default'
-        type: string
-      # 22
-      auto_rollback:
-        description: 'Auto-rollback on failure?'
-        required: false
-        default: 'true'
-        type: boolean
-      # 23
-      memory_limit:
-        description: 'Memory limit for containers (MB)'
-        required: false
-        default: '512'
-        type: number
-      # 24
-      cpu_limit:
-        description: 'CPU limit for containers (units)'
-        required: false
-        default: '500'
-        type: number
-      # 25
-      user_email:
-        description: 'Email of the user triggering deployment'
-        required: false
-        default: ''
-        type: string
-      # 26
-      force_update:
-        description: 'Force update even if nothing changed?'
-        required: false
-        default: 'false'
-        type: boolean
-      # 27
-      skip_tests:
-        description: 'Skip running tests before deploy'
-        required: false
-        default: 'false'
-        type: boolean
-      # 28
-      alert_channel:
-        description: 'Channel to send alerts to'
-        required: false
-        default: '#deployments'
-        type: string
-      # 29
-      parallel_jobs:
-        description: 'Number of parallel jobs allowed'
-        required: false
-        default: '2'
-        type: number
-      # 30
-      use_https:
-        description: 'Use HTTPS protocol'
-        required: false
-        default: 'true'
-        type: boolean
 
-      # 31
-      db_backup:
-        description: 'Create DB backup before migration'
-        required: false
-        default: 'true'
-        type: boolean
-      # 32
-      node_env:
-        description: 'Node.js environment (development/production)'
-        required: false
-        default: 'production'
+      # 7. Домен сайта
+      domain:
+        description: 'Domain name for the application'
+        default: 'example.com'
+
+      # 8. Конфигурация среды
+      config:
         type: choice
         options:
-          - development
-          - production
-      # 33
-      api_version:
-        description: 'API version to deploy'
-        required: false
-        default: 'v1'
-        type: string
-      # 34
-      container_image:
-        description: 'Container image to use'
-        required: false
-        default: 'myapp:latest'
-        type: string
-      # 35
-      enable_debugger:
-        description: 'Enable remote debugger'
-        required: false
-        default: 'false'
+          - dev
+          - prod
+          - custom
+        default: dev
+
+      # 9. Нужно ли очистить кэш
+      clear_cache:
         type: boolean
-      # 36
-      retry_on_fail:
-        description: 'Retry job on failure'
+        description: 'Clear cache after deployment'
+        default: false
+
+      # 10. Комментарий или описание деплоя
+      notes:
+        description: 'Additional notes or description for this deployment'
         required: false
-        default: 'true'
-        type: boolean
-      # 37
-      resource_group:
-        description: 'Cloud resource group'
-        required: false
-        default: 'default-group'
-        type: string
-      # 38
-      cloud_provider:
-        description: 'Cloud provider (aws/gcp/azure)'
-        required: false
-        default: 'aws'
-        type: choice
-        options:
-          - aws
-          - gcp
-          - azure
-      # 39
-      enable_monitoring:
-        description: 'Enable monitoring tools'
-        required: false
-        default: 'true'
-        type: boolean
-      # 40
-      notify_team:
-        description: 'Notify team after deployment'
-        required: false
-        default: 'true'
-        type: boolean
 
 jobs:
   deploy:
@@ -281,3 +81,29 @@ jobs:
       - name: Display version
         if: inputs.version != ''
         run: echo "Deploying version: ${{ inputs.version }}"
+
+      - name: Display user
+        run: echo "Deploying as user: ${{ inputs.deploy_user }}"
+
+      - name: Display region
+        run: echo "Deployment region: ${{ inputs.region }}"
+
+      - name: Run database migrations?
+        run: echo "Run migrations: ${{ inputs.run_migrations }}"
+
+      - name: Use API token
+        if: inputs.api_token != ''
+        run: echo "Using API token: *********"
+
+      - name: Domain name
+        run: echo "Domain: ${{ inputs.domain }}"
+
+      - name: Configuration type
+        run: echo "Configuration: ${{ inputs.config }}"
+
+      - name: Clear cache?
+        run: echo "Clear cache: ${{ inputs.clear_cache }}"
+
+      - name: Deployment notes
+        if: inputs.notes != ''
+        run: echo "Notes: ${{ inputs.notes }}"
