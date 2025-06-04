@@ -4,10 +4,6 @@ on:
   workflow_dispatch:
     inputs:
       # --- Базовые параметры ---
-      environment:
-        description: 'Environment to deploy (e.g., staging, production)'
-        required: true
-        default: 'staging'
       region:
         type: choice
         options:
@@ -24,9 +20,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Display environment
-        run: echo "Deploying to environment:${{ inputs.environment }}"
 
       - name: Display region
         run: echo "Deployment region:${{ inputs.region }}"
