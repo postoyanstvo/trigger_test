@@ -1,0 +1,25 @@
+name: Manual Workflow Dispatch 2
+
+on:
+  workflow_dispatch:
+    inputs:
+      # --- Базовые параметры ---
+      region:
+        type: choice
+        options:
+          - eu-west
+          - us-east
+          - ap-south
+        default: eu-west
+        description: 'Region for deployment'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Display region
+        run: echo "Deployment region:${{ inputs.region }}"
