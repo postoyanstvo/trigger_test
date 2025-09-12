@@ -1,0 +1,32 @@
+name: Simple Test22
+on:
+  create:
+
+jobs:
+  print_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check trigger type
+        run: |
+          echo "This workflow was triggered by: ${{ github.event_name }}"
+          case "${{ github.event_name }}" in
+            "create")
+              echo "Something was created (branch/tag/repo)."
+              ;;
+            "fork")
+              echo "Repository was forked."
+              ;;
+            "delete")
+              echo "Something was deleted (branch/tag)."
+              ;;
+            "push")
+              echo "Code was pushed to the repository."
+              ;;
+            "schedule")
+              echo "Scheduled task triggered."
+              ;;
+            *)
+              echo "Unknown trigger."
+              ;;
+          esac
+
