@@ -1,0 +1,27 @@
+name: Simple Test 
+on:
+  workflow_dispatch:
+jobs: 
+  example:
+    runs-on: ubuntu-latest
+    
+    # Переменные окружения (env)
+    env:
+      APP_NAME: "my-app"  
+    
+    steps:
+    - name: Show variables
+      env:
+        STEP_VAR: "hello"
+      run: |
+        echo "App: $APP_NAME"
+        echo "Step: $STEP_VAR"
+        echo "variable ${{ vars.one }}"
+        echo "variable ${{ vars.same }}"
+        echo "secret ${{ secrets.same }}"
+    - if: ${{ secrets.MY_TOKEN == 'mytoken' }}
+      name: Display is my secret correct?
+      run: echo "secret true"
+    - if: ${{ secrets.same == 'same' }}
+      name: Display is my secret correct?
+      run: echo "secret true"
