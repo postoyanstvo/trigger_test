@@ -1,6 +1,6 @@
 name: Simple Test 
 on:
-  push:
+  workflow_dispatch:
 jobs: 
   example:
     runs-on: ubuntu-latest
@@ -16,12 +16,12 @@ jobs:
       run: |
         echo "App: $APP_NAME"
         echo "Step: $STEP_VAR"
-        echo "variable ${{ vars.one }}"
-        echo "variable ${{ vars.same }}"
-        echo "secret ${{ secrets.same }}"
+        echo "variable ${{ vars.ONE }}"
+        echo "variable ${{ vars.SAME }}"
+        echo "secret ${{ secrets.SAME }}"
     - if: ${{ secrets.MY_TOKEN == 'mytoken' }}
       name: Display is my secret correct?
       run: echo "secret true"
-    - if: ${{ secrets.same == 'same' }}
+    - if: ${{ secrets.SAME == 'same' }}
       name: Display is my secret correct?
       run: echo "secret true"
