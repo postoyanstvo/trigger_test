@@ -1,6 +1,6 @@
 name: Simple Test 
 on:
-  workflow_dispatch:
+  push:
 jobs: 
   example:
     runs-on: ubuntu-latest
